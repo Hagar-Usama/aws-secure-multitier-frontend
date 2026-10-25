@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Notes</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="notes-card" aria-labelledby="page-title">
+        <h1 id="page-title">Notes</h1>
+        <p class="intro">A minimal three-tier application demo.</p>
+
+        <form id="note-form">
+          <label for="note-content">New note</label>
+          <textarea id="note-content" name="content" maxlength="500" required></textarea>
+          <div class="form-footer">
+            <span id="character-count" aria-live="polite">0 / 500</span>
+            <button type="submit">Save note</button>
+          </div>
+        </form>
+
+        <p id="status" role="status" aria-live="polite">Loading notes…</p>
+        <ul id="notes-list" aria-label="Saved notes"></ul>
+      </section>
+    </main>
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
+
