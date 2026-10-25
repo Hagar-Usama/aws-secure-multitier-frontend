@@ -16,7 +16,56 @@ python3 -m http.server 8080 --bind 127.0.0.1
 
 Open <http://127.0.0.1:8080>. Local `config.js` uses `http://127.0.0.1:8000`; edit it only when your local API runs elsewhere. Create, list, and delete a note to verify the interface.
 
-## Amazon Linux 2023 deployment
+
+## Ubuntu 24.04 LTS deployment
+
+Prerequisites:
+
+- Ubuntu Server 24.04 LTS frontend EC2 instance.
+- This repository available on the instance.
+- Outbound package access for installing Nginx.
+- Private network connectivity to the backend on TCP port 8000.
+- The backend security group permits TCP 8000 from the frontend security group.
+
+This script does not create AWS resources.
+
+Run from the repository root:
+
+```bash
+chmod +x deploy/deploy-ubuntu.sh
+
+sudo env \
+  BACKEND_HOST=BACKEND_PRIVATE_DNS_OR_IP \
+  BACKEND_PORT=8000 \
+  ./deploy/deploy-ubuntu.sh
+```
+
+Replace `BACKEND_PRIVATE_DNS_OR_IP` with the actual private address or resolvable private DNS name of the backend.
+
+The script installs Nginx, copies the static files to
+`/var/www/notes-frontend`, writes the Nginx configuration, validates it,
+and enables the service.
+
+The browser sends API requests to the same frontend origin.
+Nginx removes the `/api/` prefix before forwarding requests to FastAPI.
+
+Verify:
+
+```bash
+sudo nginx -t
+sudo systemctl status nginx
+curl -i http://127.0.0.1/
+curl -i http://127.0.0.1/api/health
+sudo tail -n 100 /var/log/nginx/error.log
+```
+
+If `/api/health` returns `502 Bad Gateway`, check the backend service,
+private address, network routes, and security-group rules.
+
+Do not expose the backend or PostgreSQL to the public internet.
+
+
+## (old) Amazon Linux 2023 deployment
 
 Prerequisites: an Amazon Linux 2023 frontend EC2 instance, repository files present on that instance, outbound package access for `dnf`, and private network/security-group access from the frontend instance to the backend on TCP 8000. This repository and script do **not** create EC2 instances, security groups, databases, or any other AWS resource.
 
