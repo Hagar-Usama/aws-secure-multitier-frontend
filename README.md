@@ -4,14 +4,13 @@ The frontend is a static vanilla HTML/CSS/JavaScript Notes interface. It creates
 
 ## Run locally
 
-Start the backend first, then create the ignored local endpoint file and serve the current directory:
+Start the backend first, then serve the current directory:
 
 ```bash
-cp config.example.js config.js
 python3 -m http.server 8080 --bind 127.0.0.1
 ```
 
-Open <http://127.0.0.1:8080>. `config.js` sets `window.NOTES_API_BASE_URL`; the provided example uses `http://127.0.0.1:8000`. Change it if the backend uses another host or port.
+Open <http://127.0.0.1:8080>. `config.js` sets `window.NOTES_API_BASE_URL` to `http://127.0.0.1:8000`. Change it if the backend uses another host or port.
 
 ## Nginx container behavior
 
